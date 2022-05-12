@@ -36,7 +36,7 @@ class PlayerTest(unittest.TestCase):
 
     def test_player_init_args(self):
         new_player = Player("Daniel", 3)
-        self.assertEqual(new_player.name, "Player")
+        self.assertEqual(new_player.name, "Daniel")
         self.assertEqual(new_player.score, 3)
         
 
@@ -44,19 +44,30 @@ class GameTest(unittest.TestCase):
     def test_game_init(self):
         players = [Player() for i in range(3)]
         new_game = Game(players)
-        self.assertEquals(new_game.players, players)
-        self.assertEquals(new_game.winner, None)
-        self.assertEquals(new_game.rounds_played, 0)
-        self.assertEquals(new_game.highscores, [])
+        self.assertEqual(new_game.players, players)
+        self.assertEqual(new_game.winner, None)
+        self.assertEqual(new_game.rounds_played, 0)
+        self.assertEqual(new_game.highscores, [])
 
     def test_game_run(self):
-        pass
+        players = [Player() for i in range(3)]
+        new_game = Game(players)
+        new_game.run()
 
-    def test_game_save_scores():
-        pass
+    def test_game_save_scores(self):
+        players = [Player() for i in range(3)]
+        new_game = Game(players)
+        new_game.run()
+        with open("highscores.csv", "r") as f:
+            prev = f.read()
+            new_game.save_highscores()
+            self.assertNotEqual(prev, f.read())
 
-    def test_game_load_scores():
-        pass
+    def test_game_load_scores(self):
+        players = [Player() for i in range(3)]
+        new_game = Game(players)
+        new_game.load_highscores()
+        self.assertNotEqual(new_game.highscores, [])
 
 
 if __name__ == "__main__":
