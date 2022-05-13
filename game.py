@@ -4,9 +4,10 @@ from dice import Dice
 
 
 class Game:
-    def __init__(self, players, num_rounds=3, dice_types=(6, 6, 6)):
+    def __init__(self, players, num_rounds=3, num_dice=3, dice_types=None):
         self.players = players
-        self.dice = [Dice(dice_type) for _, dice_type in enumerate(dice_types)]
+        self.dice_types = (6,)*num_dice if dice_types is None else dice_types
+        self.dice = [Dice(dice_type) for _, dice_type in zip(range(num_dice), dice_types)]
         self.num_rounds = num_rounds
         self.winner = None
         self.rounds_played = 0
@@ -63,6 +64,8 @@ class Game:
             
             # check if there is a winner
             self.winner = self.get_winner()
+            if self.winner is None:
+                print("Draw!")
         
         # print the winner
         print(f"{self.winner.name} won with score {self.winner.score}!")
@@ -77,7 +80,8 @@ class Game:
         self.load_highscores()
         sorted_highscores = sorted(self.highscores, key=lambda player: player.score, reverse=True)
         print("Highscores:")
-        for player in sorted_highscores:
+        for i in range(5): # only print top 5
+            player = sorted_highscores[i]
             print(f"{player.name}: {player.score} points")
         
         print()

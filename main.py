@@ -2,6 +2,10 @@ from game import Game
 from player import Player
 from string import whitespace
 
+NUM_ROUNDS = 3
+NUM_DICE_PER_PLAYER = 3
+DICE_TYPES = (6, 6, 6)
+
 
 def init_players():
     players = []
@@ -28,7 +32,7 @@ def init_players():
 
 def main():
     players = init_players()
-    game = Game(players)
+    game = Game(players, NUM_ROUNDS, NUM_DICE_PER_PLAYER, DICE_TYPES)
     print("Game started!")
     game.run()
     print("Game over! Thanks for playing!")
