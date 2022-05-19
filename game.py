@@ -66,6 +66,7 @@ class Game:
             self.winner = self.get_winner()
             if self.winner is None:
                 print("Draw!")
+                print()
         
         # print the winner
         print(f"{self.winner.name} won with score {self.winner.score}!")
