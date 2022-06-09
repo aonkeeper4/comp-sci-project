@@ -1,17 +1,30 @@
 import csv
 from player import Player
 from dice import Dice
+import time
 
 
 class Game:
-    def __init__(self, players, num_rounds=3, num_dice=3, dice_types=None):
+    def __init__(self, players, num_rounds=3, num_dice=3, dice_types=None, *, _no_print=False):
         self.players = players
         self.dice_types = (6,)*num_dice if dice_types is None else dice_types
-        self.dice = [Dice(dice_type) for _, dice_type in zip(range(num_dice), dice_types)]
+        
+        if len(self.dice_types) != num_dice:
+            raise ValueError("Number of dice must match number of dice types")
+            
+        self.dice = [Dice(dice_type) for dice_type in self.dice_types]
         self.num_rounds = num_rounds
         self.winner = None
         self.rounds_played = 0
         self.highscores = []
+        self._no_print = _no_print
+
+    def _print(self, *args, **kwargs):
+        if self._no_print:
+            return
+        else:
+            print(*args, **kwargs)
+            time.sleep(0.5)
 
     def roll_dice(self):
         # roll dice
@@ -28,17 +41,17 @@ class Game:
             # add dice score to player score
             player.score += dice_score
             dice_str = ", a ".join(str(d) for d in dice)
-            print(f"{player.name} rolled {dice_str} and got {dice_score} points!")
+            self._print(f"{player.name} rolled {dice_str} and got {dice_score} points!")
             if highest[0] == highest[1]: # if two highest are equal
-                print(f"{player.name} got a double!")
+                self._print(f"{player.name} got a double!")
                 if highest[0] == 6:
                     player.score += 6
-                    print(f"Double six! A bonus 6 points were added to {player.name}'s score!")
+                    self._print(f"Double six! A bonus 6 points were added to {player.name}'s score!")
                 else:
                     player.score += 5
-                    print(f"A bonus 5 points were added to {player.name}'s score!")
+                    self._print(f"A bonus 5 points were added to {player.name}'s score!")
 
-            print()
+            self._print()
 
         self.rounds_played += 1
 
@@ -56,21 +69,21 @@ class Game:
         while self.winner is None:
             for i in range(self.num_rounds):
                 self.play_round()
-                print(f"Scores for round {self.rounds_played}:")
+                self._print(f"Scores for round {self.rounds_played}:")
                 for player in self.players:
-                    print(f"{player.name}: {player.score} points")
+                    self._print(f"{player.name}: {player.score} points")
                 
-                print()
+                self._print()
             
             # check if there is a winner
             self.winner = self.get_winner()
             if self.winner is None:
-                print("Draw!")
-                print()
+                self._print("Draw!")
+                self._print()
         
         # print the winner
-        print(f"{self.winner.name} won with score {self.winner.score}!")
-        print()
+        self._print(f"{self.winner.name} won with score {self.winner.score}!")
+        self._print()
 
         # add the winner to the highscores
         self.highscores.append(self.winner)
@@ -80,12 +93,12 @@ class Game:
     def print_highscores(self):
         self.load_highscores()
         sorted_highscores = sorted(self.highscores, key=lambda player: player.score, reverse=True)
-        print("Highscores:")
+        self._print("Highscores:")
         for i in range(5): # only print top 5
             player = sorted_highscores[i]
-            print(f"{player.name}: {player.score} points")
+            self._print(f"{player.name}: {player.score} points")
         
-        print()
+        self._print()
 
     def save_highscores(self):
         with open("highscores.csv", "w", newline="") as f:

@@ -8,23 +8,35 @@ NUM_DICE_PER_PLAYER = 3
 DICE_TYPES = (6, 6, 6)
 MAX_PLAYERS = 2
 
-
-def init_players():
+def get_prev_players():
     with open("highscores.csv", "r") as f:
         reader = csv.reader(f)
         next(reader)
         prev_players = [row[0] for row in reader]
-        print(prev_players)
 
+    return prev_players
+
+def player_name_valid(player_name):
+    is_empty = player_name == ""
+    contains_whitespace = any(ws in player_name for ws in whitespace)
+    within_length_range = 0 < len(player_name) <= 20
+    unique = player_name not in get_prev_players()
+
+    return (
+        (not is_empty) and \
+        (not contains_whitespace) and \
+        (within_length_range) and \
+        (unique)
+    )
+    
+
+def init_players():
     players = []
     
     while True:
         player_name = input("Enter player name: ")
-        if (player_name == "") or \
-           (any(ws in player_name for ws in whitespace)) or \
-           (not (0 < len(player_name) <= 20)) or \
-           (player_name in prev_players): # check if player name is valid
-            print("Invalid player name. Try again.")
+        if not player_name_valid(player_name):
+            print("Invalid player name")
             continue
         else:
             players.append(Player(player_name))
@@ -36,7 +48,7 @@ def init_players():
         continue_ = input("Enter another player? (y/n): ")
         if continue_ == "y":
             continue
-        elif len(players) > 1:
+        elif len(players) >= 2:
             break
         else:
             print("You need at least 2 players to play!")

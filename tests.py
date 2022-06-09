@@ -43,20 +43,25 @@ class PlayerTest(unittest.TestCase):
 class GameTest(unittest.TestCase):
     def test_game_init(self):
         players = [Player() for i in range(3)]
-        new_game = Game(players)
+        new_game = Game(players, _no_print=True)
         self.assertEqual(new_game.players, players)
         self.assertEqual(new_game.winner, None)
         self.assertEqual(new_game.rounds_played, 0)
         self.assertEqual(new_game.highscores, [])
 
+    def test_game_init_invalid(self):
+        with self.assertRaises(ValueError):
+            players = [Player() for i in range(3)]
+            new_game = Game(players, num_dice=4, dice_types=(6, 6, 6), _no_print=True)
+
     def test_game_run(self):
         players = [Player() for i in range(3)]
-        new_game = Game(players)
+        new_game = Game(players, _no_print=True)
         new_game.run()
 
     def test_game_save_scores(self):
         players = [Player() for i in range(3)]
-        new_game = Game(players)
+        new_game = Game(players, _no_print=True)
         new_game.run()
         with open("highscores.csv", "r") as f:
             prev = f.read()
@@ -65,7 +70,7 @@ class GameTest(unittest.TestCase):
 
     def test_game_load_scores(self):
         players = [Player() for i in range(3)]
-        new_game = Game(players)
+        new_game = Game(players, _no_print=True)
         new_game.load_highscores()
         self.assertNotEqual(new_game.highscores, [])
 
