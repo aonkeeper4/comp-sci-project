@@ -3,6 +3,7 @@ from dice import Dice
 from game import Game
 from player import Player
 
+
 class DiceTest(unittest.TestCase):
     def test_dice_init_no_args(self):
         new_dice = Dice()
@@ -15,18 +16,18 @@ class DiceTest(unittest.TestCase):
     def test_dice_init_args_invalid(self):
         with self.assertRaises(TypeError):
             new_dice = Dice("eleven")
-    
+
     def test_dice_roll(self):
         new_dice = Dice()
         rolled = new_dice.roll()
-        valid_range = range(1, 7) # 1 to 6
+        valid_range = range(1, 7)  # 1 to 6
         self.assertIn(rolled, valid_range)
 
     def test_dice_str(self):
         new_dice = Dice()
         dice_str = str(new_dice)
         self.assertEqual(dice_str, "d6")
-        
+
 
 class PlayerTest(unittest.TestCase):
     def test_player_init_no_args(self):
@@ -38,7 +39,7 @@ class PlayerTest(unittest.TestCase):
         new_player = Player("Daniel", 3)
         self.assertEqual(new_player.name, "Daniel")
         self.assertEqual(new_player.score, 3)
-        
+
 
 class GameTest(unittest.TestCase):
     def test_game_init(self):
@@ -52,7 +53,10 @@ class GameTest(unittest.TestCase):
     def test_game_init_invalid(self):
         with self.assertRaises(ValueError):
             players = [Player() for i in range(3)]
-            new_game = Game(players, num_dice=4, dice_types=(6, 6, 6), _no_print=True)
+            new_game = Game(players,
+                            num_dice=4,
+                            dice_types=(6, 6, 6),
+                            _no_print=True)
 
     def test_game_run(self):
         players = [Player() for i in range(3)]

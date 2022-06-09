@@ -1,5 +1,6 @@
 from random import randint
 
+
 class Dice:
     def __init__(self, sides=6):
         self.sides = sides
@@ -11,4 +12,3 @@ class Dice:
 
     def __str__(self):
         return f"d{self.sides}"
-        

@@ -8,6 +8,7 @@ NUM_DICE_PER_PLAYER = 3
 DICE_TYPES = (6, 6, 6)
 MAX_PLAYERS = 2
 
+
 def get_prev_players():
     with open("highscores.csv", "r") as f:
         reader = csv.reader(f)
@@ -15,6 +16,7 @@ def get_prev_players():
         prev_players = [row[0] for row in reader]
 
     return prev_players
+
 
 def player_name_valid(player_name):
     is_empty = player_name == ""
@@ -28,11 +30,11 @@ def player_name_valid(player_name):
         (within_length_range) and \
         (unique)
     )
-    
+
 
 def init_players():
     players = []
-    
+
     while True:
         player_name = input("Enter player name: ")
         if not player_name_valid(player_name):
@@ -68,4 +70,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
