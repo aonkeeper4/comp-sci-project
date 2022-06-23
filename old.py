@@ -1,3 +1,5 @@
+# this is the old code
+
 from random import randint
 
 winner = None

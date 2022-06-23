@@ -1,0 +1,16 @@
+while there is no winner
+    for round_number from 1 to 3
+        increment rounds_played
+        for each player in players
+            roll 3 dice
+            get two largest dice
+            add sum of two largest dice to player score
+            if two biggest dice are same then
+                if they are both 6 then
+                    add 6 to player score
+                else
+                    add 5 to player score
+        display scores
+
+    if there is no draw then
+        winner is player who has biggest score
